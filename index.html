@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calcular PX para VW e VH</title>
+    <title>Calcular PX, VW e VH</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -92,12 +92,13 @@
 
 <body>
     <div class="container">
-        <h1>Calcular PX para VW e VH</h1>
+        <h1>Calcular PX, VW e VH</h1>
 
+        <!-- Card para PX -> VW -->
         <div class="card">
-            <h2>Conversão para VW</h2>
-            <label for="baseWidth">Digite a largura base da tela (em px):</label>
-            <input type="number" id="baseWidth" value="1920" placeholder="Ex: 1920">
+            <h2>PX para VW</h2>
+            <label for="baseWidthVW">Digite a largura base da tela (em px) para VW:</label>
+            <input type="number" id="baseWidthVW" value="1920" placeholder="Ex: 1920">
 
             <label for="pxValueVW">Digite o valor em PX que você deseja converter para VW:</label>
             <input type="number" id="pxValueVW" value="40" placeholder="Ex: 40">
@@ -110,10 +111,28 @@
             </div>
         </div>
 
+        <!-- Card para VW -> PX -->
         <div class="card">
-            <h2>Conversão para VH</h2>
-            <label for="baseHeight">Digite a altura base da tela (em px):</label>
-            <input type="number" id="baseHeight" value="994" placeholder="Ex: 994">
+            <h2>VW para PX</h2>
+            <label for="baseWidthVWToPX">Digite a largura base da tela (em px) para VW:</label>
+            <input type="number" id="baseWidthVWToPX" value="1024" placeholder="Ex: 1920">
+
+            <label for="vwValue">Digite o valor em VW que você deseja converter para PX:</label>
+            <input type="number" id="vwValue" placeholder="Ex: 5">
+
+            <button onclick="convertVWToPX()">Converter para PX</button>
+
+            <div class="result hidden" id="resultContainerVWToPX">
+                <input type="text" id="resultVWToPX" readonly>
+                <button class="copy-btn" onclick="copyToClipboard('resultVWToPX')">Copiar</button>
+            </div>
+        </div>
+
+        <!-- Card para PX -> VH -->
+        <div class="card">
+            <h2>PX para VH</h2>
+            <label for="baseHeightVH">Digite a altura base da tela (em px) para VH:</label>
+            <input type="number" id="baseHeightVH" value="994" placeholder="Ex: 994">
 
             <label for="pxValueVH">Digite o valor em PX que você deseja converter para VH:</label>
             <input type="number" id="pxValueVH" value="40" placeholder="Ex: 40">
@@ -125,11 +144,28 @@
                 <button class="copy-btn" onclick="copyToClipboard('resultVH')">Copiar</button>
             </div>
         </div>
+
+        <!-- Card para VH -> PX -->
+        <div class="card">
+            <h2>VH para PX</h2>
+            <label for="baseHeightVHToPX">Digite a altura base da tela (em px) para VH:</label>
+            <input type="number" id="baseHeightVHToPX" value="768" placeholder="Ex: 994">
+
+            <label for="vhValue">Digite o valor em VH que você deseja converter para PX:</label>
+            <input type="number" id="vhValue" placeholder="Ex: 5">
+
+            <button onclick="convertVHToPX()">Converter para PX</button>
+
+            <div class="result hidden" id="resultContainerVHToPX">
+                <input type="text" id="resultVHToPX" readonly>
+                <button class="copy-btn" onclick="copyToClipboard('resultVHToPX')">Copiar</button>
+            </div>
+        </div>
     </div>
 
     <script>
         function convertToVW() {
-            const baseWidth = document.getElementById('baseWidth').value;
+            const baseWidth = document.getElementById('baseWidthVW').value;
             const pxValue = document.getElementById('pxValueVW').value;
 
             if (!baseWidth || baseWidth <= 0 || !pxValue || pxValue <= 0) {
@@ -144,7 +180,7 @@
         }
 
         function convertToVH() {
-            const baseHeight = document.getElementById('baseHeight').value;
+            const baseHeight = document.getElementById('baseHeightVH').value;
             const pxValue = document.getElementById('pxValueVH').value;
 
             if (!baseHeight || baseHeight <= 0 || !pxValue || pxValue <= 0) {
@@ -158,17 +194,41 @@
             document.getElementById('resultVH').value = `${vhValue.toFixed(2)}vh`;
         }
 
+        function convertVWToPX() {
+            const baseWidth = document.getElementById('baseWidthVWToPX').value;
+            const vwValue = document.getElementById('vwValue').value;
+
+            if (!baseWidth || baseWidth <= 0 || !vwValue || vwValue <= 0) {
+                alert("Por favor, insira valores válidos para VW.");
+                return;
+            }
+
+            const pxValue = (vwValue / 100) * baseWidth;
+            const resultContainerVWToPX = document.getElementById('resultContainerVWToPX');
+            resultContainerVWToPX.classList.remove('hidden');
+            document.getElementById('resultVWToPX').value = `${pxValue.toFixed(2)}px`;
+        }
+
+        function convertVHToPX() {
+            const baseHeight = document.getElementById('baseHeightVHToPX').value;
+            const vhValue = document.getElementById('vhValue').value;
+
+            if (!baseHeight || baseHeight <= 0 || !vhValue || vhValue <= 0) {
+                alert("Por favor, insira valores válidos para VH.");
+                return;
+            }
+
+            const pxValue = (vhValue / 100) * baseHeight;
+            const resultContainerVHToPX = document.getElementById('resultContainerVHToPX');
+            resultContainerVHToPX.classList.remove('hidden');
+            document.getElementById('resultVHToPX').value = `${pxValue.toFixed(2)}px`;
+        }
+
         function copyToClipboard(resultId) {
             const resultInput = document.getElementById(resultId);
             resultInput.select();
             document.execCommand('copy');
-            alert('Valor copiado para a área de transferência!');
         }
-
-        window.onload = () => {
-            convertToVW();
-            convertToVH();
-        };
     </script>
 </body>
 
